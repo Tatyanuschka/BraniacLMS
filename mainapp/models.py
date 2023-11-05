@@ -1,5 +1,7 @@
 from django.db import models
 
+NULLABLE = {"blank": True, "null": True}
+
 
 class News(models.Model):
     title = models.CharField(max_length=256, verbose_name="Title")
@@ -16,6 +18,11 @@ class News(models.Model):
     def delete(self, *args):
         self.deleted = True
         self.save()
+
+    class Meta:
+        verbose_name = "Новость"
+        verbose_name_plural = "Новости"
+        ordering = ("-created",)
 
 
 class CoursesManager(models.Manager):
@@ -42,6 +49,11 @@ class Courses(models.Model):
         self.deleted = True
         self.save()
 
+    class Meta:
+        verbose_name = "Курс"
+        verbose_name_plural = "Курсы"
+        ordering = ("-created",)
+
 
 class Lesson(models.Model):
     course = models.ForeignKey(Courses, on_delete=models.CASCADE)
@@ -61,6 +73,8 @@ class Lesson(models.Model):
         self.save()
 
     class Meta:
+        verbose_name = "Урок"
+        verbose_name_plural = "Уроки"
         ordering = ("course", "num")
 
 
