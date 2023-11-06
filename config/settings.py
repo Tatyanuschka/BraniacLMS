@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "markdownify.apps.MarkdownifyConfig",
     "mainapp",
+    "authapp",
 ]
 
 MIDDLEWARE = [
@@ -101,6 +102,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "authapp.CustomUser"
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
