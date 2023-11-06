@@ -10,8 +10,6 @@ from django.utils.translation import gettext_lazy as _
 
 
 def users_avatars_path(instance, filename):
-    # file will be uploaded to
-    #   MEDIA_ROOT / user_<username> / avatars / <filename>
     num = int(time() * 1000)
     suff = Path(filename).suffix
     return "user_{0}/avatars/{1}".format(instance.username, f"pic_{num}{suff}")
@@ -27,7 +25,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         help_text=_("Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."),
         validators=[username_validator],
         error_messages={
-            "unique": _("A user with that username already exists."),
+            "unique": _("A user with such username already exists"),
         },
     )
     first_name = models.CharField(_("first name"), max_length=150, blank=True)
@@ -35,17 +33,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     age = models.PositiveIntegerField(blank=True, null=True)
     avatar = models.ImageField(upload_to=users_avatars_path, blank=True, null=True)
     email = models.CharField(
-        _("email address"),
+        _("emal address"),
         max_length=256,
         unique=True,
         error_messages={
-            "unique": _("A user with that email address already exists."),
+            "unique": _("A user with this emal address already exists"),
         },
     )
     is_staff = models.BooleanField(
-        _("staff status"),
-        default=False,
-        help_text=_("Designates whether the user can log into this admin site."),
+        _("staff status"), default=False, help_text=_("Designates whether the user can log into this admin site.")
     )
     is_active = models.BooleanField(
         _("active"),
@@ -72,16 +68,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         self.email = self.__class__.objects.normalize_email(self.email)
 
     def get_full_name(self):
-        """
-        Return the first_name plus the last_name, with a space in between.
-        """
         full_name = "%s %s" % (self.first_name, self.last_name)
         return full_name.strip()
 
     def get_short_name(self):
-        """Return the short name for the user."""
         return self.first_name
 
     def email_user(self, subject, message, from_email=None, **kwargs):
-        """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
