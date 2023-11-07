@@ -1,5 +1,5 @@
-# Register your models here.
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
 
 from . import models as mainapp_models
 
@@ -26,9 +26,9 @@ class LessonAdmin(admin.ModelAdmin):
     def get_course_name(self, obj):
         return obj.course.name
 
-    get_course_name.short_description = "Course"
+    get_course_name.short_description = _("Course")
 
     def mark_deleted(self, request, queryset):
         queryset.update(deleted=True)
 
-    mark_deleted.short_description = "Пометить на удаление"
+    mark_deleted.short_description = _("Mark deleted")
